@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Archivio — Tienda Digital</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #f5f0e8;
+      --ink: #1a1612;
+      --sienna: #b85c38;
+      --gold: #c9a84c;
+      --warm-gray: #8a8278;
+      --card-bg: #faf7f2;
+      --border: #e2ddd6;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── GRAIN OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(245,240,232,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 3rem;
+      height: 68px;
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .logo span { color: var(--sienna); }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--ink); }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    .cart-btn {
+      position: relative;
+      background: var(--ink);
+      color: var(--cream);
+      border: none;
+      padding: 0.55rem 1.3rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .cart-btn:hover { background: var(--sienna); }
+
+    .cart-count {
+      position: absolute;
+      top: -6px; right: -6px;
+      background: var(--sienna);
+      color: white;
+      border-radius: 50%;
+      width: 18px; height: 18px;
+      font-size: 0.65rem;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700;
+      display: none;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 520px;
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .hero-text {
+      padding: 5rem 4rem 5rem 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .hero-tag {
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--sienna);
+      font-weight: 500;
+      margin-bottom: 1.2rem;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 5vw, 4.2rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--sienna);
+    }
+
+    .hero-sub {
+      font-size: 1rem;
+      color: var(--warm-gray);
+      line-height: 1.7;
+      max-width: 420px;
+      margin-bottom: 2.5rem;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      background: var(--ink);
+      color: var(--cream);
+      padding: 0.9rem 2.2rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+      align-self: flex-start;
+    }
+
+    .btn-primary:hover { background: var(--sienna); transform: translateY(-1px); }
+
+    .hero-visual {
+      background: var(--ink);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-visual-inner {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      padding: 3rem;
+      transform: rotate(-3deg);
+    }
+
+    .mock-file {
+      background: var(--cream);
+      padding: 1.5rem 1.2rem;
+      aspect-ratio: 3/4;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+      animation: float 4s ease-in-out infinite;
+    }
+
+    .mock-file:nth-child(2) { animation-delay: 1s; margin-top: 2rem; }
+    .mock-file:nth-child(3) { animation-delay: 0.5s; }
+    .mock-file:nth-child(4) { animation-delay: 1.5s; margin-top: 2rem; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .mock-file-bar {
+      height: 6px;
+      background: var(--sienna);
+      width: 40%;
+      border-radius: 3px;
+    }
+
+    .mock-file-line {
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+    }
+
+    .mock-file-line.short { width: 60%; }
+
+    /* ── SECTION ── */
+    .section { padding: 5rem 3rem; }
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 3rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1rem;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    .section-link {
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--sienna);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    /* ── PRODUCT GRID ── */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 2rem;
+    }
+
+    .product-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(26,22,18,0.12);
+    }
+
+    .product-thumb {
+      aspect-ratio: 4/3;
+      background: var(--ink);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .product-thumb-icon {
+      font-size: 3rem;
+      opacity: 0.4;
+    }
+
+    .product-badge {
+      position: absolute;
+      top: 0.8rem; left: 0.8rem;
+      background: var(--sienna);
+      color: white;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.6rem;
+    }
+
+    .product-info {
+      padding: 1.4rem 1.4rem 1.2rem;
+    }
+
+    .product-cat {
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--warm-gray);
+      margin-bottom: 0.4rem;
+    }
+
+    .product-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      line-height: 1.3;
+    }
+
+    .product-desc {
+      font-size: 0.82rem;
+      color: var(--warm-gray);
+      line-height: 1.6;
+      margin-bottom: 1.2rem;
+    }
+
+    .product-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .product-price {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .product-price span {
+      font-size: 0.8rem;
+      color: var(--warm-gray);
+      font-weight: 400;
+    }
+
+    .add-btn {
+      background: var(--ink);
+      color: var(--cream);
+      border: none;
+      padding: 0.55rem 1.1rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .add-btn:hover { background: var(--sienna); }
+
+    /* ── UPLOAD PANEL ── */
+    .upload-section {
+      background: var(--ink);
+      color: var(--cream);
+      padding: 5rem 3rem;
+    }
+
+    .upload-section .section-title { color: var(--cream); }
+
+    .upload-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      margin-top: 3rem;
+    }
+
+    .upload-form-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 2.5rem;
+    }
+
+    .upload-form-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      margin-bottom: 1.8rem;
+      color: var(--gold);
+    }
+
+    .form-group { margin-bottom: 1.4rem; }
+
+    .form-group label {
+      display: block;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.6);
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: var(--cream);
+      padding: 0.75rem 1rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: var(--gold);
+    }
+
+    .form-group textarea { resize: vertical; min-height: 90px; }
+
+    .form-group select option { background: var(--ink); }
+
+    .price-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .drop-zone {
+      border: 2px dashed rgba(255,255,255,0.2);
+      padding: 3rem 2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      position: relative;
+    }
+
+    .drop-zone:hover, .drop-zone.drag-over {
+      border-color: var(--gold);
+      background: rgba(201,168,76,0.06);
+    }
+
+    .drop-zone input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+
+    .drop-icon { font-size: 2.5rem; margin-bottom: 1rem; opacity: 0.5; }
+
+    .drop-text {
+      font-size: 0.9rem;
+      color: rgba(245,240,232,0.6);
+      line-height: 1.6;
+    }
+
+    .drop-text strong { color: var(--gold); }
+
+    .file-list { margin-top: 1.5rem; }
+
+    .file-item {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 0.7rem 1rem;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 0.5rem;
+      font-size: 0.85rem;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-10px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .file-icon { font-size: 1.2rem; }
+    .file-name { flex: 1; color: var(--cream); }
+    .file-size { color: rgba(245,240,232,0.4); font-size: 0.75rem; }
+    .file-remove { color: var(--sienna); cursor: pointer; font-size: 1.1rem; }
+
+    .btn-upload {
+      width: 100%;
+      background: var(--gold);
+      color: var(--ink);
+      border: none;
+      padding: 1rem 2rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      margin-top: 1.5rem;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+
+    .btn-upload:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn-upload:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+    /* ── PROGRESS ── */
+    .progress-wrap {
+      margin-top: 1rem;
+      display: none;
+    }
+
+    .progress-bar-bg {
+      height: 3px;
+      background: rgba(255,255,255,0.1);
+    }
+
+    .progress-bar-fill {
+      height: 3px;
+      background: var(--gold);
+      width: 0%;
+      transition: width 0.3s;
+    }
+
+    .progress-label {
+      font-size: 0.75rem;
+      color: var(--gold);
+      margin-top: 0.5rem;
+      letter-spacing: 0.06em;
+    }
+
+    /* ── CART SIDEBAR ── */
+    .cart-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(26,22,18,0.5);
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    .cart-overlay.open { opacity: 1; pointer-events: all; }
+
+    .cart-sidebar {
+      position: fixed;
+      top: 0; right: 0;
+      width: 420px;
+      height: 100vh;
+      background: var(--cream);
+      z-index: 201;
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+      display: flex;
+      flex-direction: column;
+      border-left: 1px solid var(--border);
+    }
+
+    .cart-sidebar.open { transform: translateX(0); }
+
+    .cart-header {
+      padding: 2rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .cart-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+    }
+
+    .cart-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--warm-gray);
+      transition: color 0.2s;
+    }
+
+    .cart-close:hover { color: var(--ink); }
+
+    .cart-items { flex: 1; overflow-y: auto; padding: 1.5rem 2rem; }
+
+    .cart-empty {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--warm-gray);
+    }
+
+    .cart-empty-icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.4; }
+
+    .cart-item {
+      display: flex;
+      gap: 1rem;
+      padding: 1.2rem 0;
+      border-bottom: 1px solid var(--border);
+      align-items: flex-start;
+      animation: slideIn 0.25s ease;
+    }
+
+    .cart-item-thumb {
+      width: 56px; height: 56px;
+      background: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+
+    .cart-item-info { flex: 1; }
+    .cart-item-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 0.2rem;
+    }
+
+    .cart-item-cat {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--warm-gray);
+    }
+
+    .cart-item-price {
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .cart-item-remove {
+      background: none;
+      border: none;
+      color: var(--warm-gray);
+      cursor: pointer;
+      font-size: 0.9rem;
+      margin-top: 0.3rem;
+      transition: color 0.2s;
+    }
+
+    .cart-item-remove:hover { color: var(--sienna); }
+
+    .cart-footer {
+      padding: 1.5rem 2rem 2rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .cart-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .cart-total-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--warm-gray);
+    }
+
+    .cart-total-amount {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+    }
+
+    .payment-methods {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .pm-badge {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      padding: 0.3rem 0.7rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--warm-gray);
+    }
+
+    .checkout-btn {
+      width: 100%;
+      background: var(--sienna);
+      color: white;
+      border: none;
+      padding: 1rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+
+    .checkout-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+    .checkout-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+    .secure-note {
+      text-align: center;
+      font-size: 0.72rem;
+      color: var(--warm-gray);
+      margin-top: 0.8rem;
+    }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(26,22,18,0.7);
+      z-index: 300;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-overlay.open { display: flex; }
+
+    .modal {
+      background: var(--cream);
+      width: 90%;
+      max-width: 480px;
+      padding: 3rem;
+      text-align: center;
+      animation: modalIn 0.3s ease;
+    }
+
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .modal-icon { font-size: 3rem; margin-bottom: 1rem; }
+    .modal h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .modal p { color: var(--warm-gray); line-height: 1.6; margin-bottom: 2rem; }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--ink);
+      color: var(--cream);
+      padding: 0.9rem 1.8rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      z-index: 400;
+      transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+      white-space: nowrap;
+    }
+
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink);
+      color: rgba(245,240,232,0.5);
+      padding: 3rem;
+      text-align: center;
+      font-size: 0.8rem;
+      letter-spacing: 0.06em;
+      border-top: 2px solid var(--sienna);
+    }
+
+    footer .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: var(--cream);
+      margin-bottom: 1rem;
+    }
+
+    footer .footer-logo span { color: var(--sienna); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 0 1.5rem; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-visual { display: none; }
+      .upload-grid { grid-template-columns: 1fr; }
+      .cart-sidebar { width: 100%; }
+      .section { padding: 3rem 1.5rem; }
+      .upload-section { padding: 3rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="logo" href="#">Archi<span>vio</span></a>
+  <ul class="nav-links">
+    <li><a href="#productos">Productos</a></li>
+    <li><a href="#vender">Vender</a></li>
+    <li><a href="#vender">Subir archivo</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="cart-btn" onclick="openCart()">
+      Carrito
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <p class="hero-tag">Tienda de archivos digitales</p>
+    <h1 class="hero-title">Tu conocimiento,<br><em>en formato digital.</em></h1>
+    <p class="hero-sub">Vendé ebooks, plantillas y PDFs a cualquier parte del mundo. Descarga instantánea, pagos reales.</p>
+    <a href="#productos" class="btn-primary">Ver productos</a>
+  </div>
+  <div class="hero-visual" aria-hidden="true">
+    <div class="hero-visual-inner">
+      <div class="mock-file">
+        <div class="mock-file-bar"></div>
+        <div class="mock-file-line"></div>
+        <div class="mock-file-line short"></div>
+        <div class="mock-file-line"></div>
+        <div class="mock-file-line short"></div>
+      </div>
+      <div class="mock-file">
+        <div class="mock-file-bar"></div>
+        <div class="mock-file-line short"></div>
+        <div class="mock-file-line"></div>
+        <div class="mock-file-line"></div>
+      </div>
+      <div class="mock-file">
+        <div class="mock-file-bar"></div>
+        <div class="mock-file-line"></div>
+        <div class="mock-file-line"></div>
+        <div class="mock-file-line short"></div>
+      </div>
+      <div class="mock-file">
+        <div class="mock-file-bar"></div>
+        <div class="mock-file-line short"></div>
+        <div class="mock-file-line"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="section" id="productos">
+  <div class="section-header">
+    <h2 class="section-title">Productos disponibles</h2>
+    <a href="#" class="section-link">Ver todos →</a>
+  </div>
+  <div class="product-grid" id="productGrid">
+    <!-- Products rendered by JS -->
+  </div>
+</section>
+
+<!-- UPLOAD / SELL -->
+<section class="upload-section" id="vender">
+  <div style="border-bottom:1px solid rgba(255,255,255,0.12); padding-bottom:1rem; margin-bottom:3rem; display:flex; justify-content:space-between; align-items:baseline;">
+    <h2 class="section-title">Publicar un producto</h2>
+    <span style="font-size:0.75rem; letter-spacing:0.1em; text-transform:uppercase; color:rgba(245,240,232,0.4);">Panel de vendedor</span>
+  </div>
+  <div class="upload-grid">
+    <!-- Left: form -->
+    <div class="upload-form-card">
+      <h3>Información del producto</h3>
+
+      <div class="form-group">
+        <label>Nombre del producto</label>
+        <input type="text" id="prodName" placeholder="Ej: Plantilla de Presupuesto Profesional" />
+      </div>
+
+      <div class="form-group">
+        <label>Descripción</label>
+        <textarea id="prodDesc" placeholder="Describí qué incluye tu producto, para quién es ideal, etc."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Categoría</label>
+        <select id="prodCat">
+          <option value="">— Seleccioná una categoría —</option>
+          <option value="Ebook">📖 Ebook</option>
+          <option value="Plantilla">📐 Plantilla</option>
+          <option value="Guía PDF">📄 Guía PDF</option>
+          <option value="Pack">📦 Pack de recursos</option>
+          <option value="Curso">🎓 Material de curso</option>
+        </select>
+      </div>
+
+      <div class="price-row">
+        <div class="form-group">
+          <label>Precio (USD)</label>
+          <input type="number" id="prodPrice" placeholder="9.99" min="0.99" step="0.01" />
+        </div>
+        <div class="form-group">
+          <label>Moneda</label>
+          <select id="prodCurrency">
+            <option value="USD">🇺🇸 USD</option>
+            <option value="ARS">🇦🇷 ARS</option>
+            <option value="EUR">🇪🇺 EUR</option>
+          </select>
+        </div>
+      </div>
+
+      <button class="btn-upload" id="publishBtn" onclick="publishProduct()" disabled>
+        Publicar producto
+      </button>
+
+      <div class="progress-wrap" id="progressWrap">
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="progressFill"></div>
+        </div>
+        <div class="progress-label" id="progressLabel">Subiendo...</div>
+      </div>
+    </div>
+
+    <!-- Right: file upload -->
+    <div>
+      <div class="upload-form-card">
+        <h3>Archivo del producto</h3>
+        <div class="drop-zone" id="dropZone">
+          <input type="file" id="fileInput" accept=".pdf,.epub,.zip,.docx,.xlsx,.pptx,.png,.jpg" multiple onchange="handleFiles(this.files)" />
+          <div class="drop-icon">📁</div>
+          <div class="drop-text">
+            <strong>Arrastrá y soltá</strong> tus archivos acá<br>
+            o hacé clic para seleccionar<br><br>
+            <small>PDF · EPUB · ZIP · DOCX · XLSX · PPTX · PNG · JPG<br>Máx. 500 MB por archivo</small>
+          </div>
+        </div>
+        <div class="file-list" id="fileList"></div>
+      </div>
+
+      <div class="upload-form-card" style="margin-top:1.5rem;">
+        <h3>Métodos de pago</h3>
+        <p style="font-size:0.82rem; color:rgba(245,240,232,0.55); line-height:1.6; margin-bottom:1.2rem;">
+          Conectá tu cuenta para recibir pagos. Los compradores pueden pagar con tarjeta de crédito, débito o PayPal.
+        </p>
+        <div style="display:flex; flex-direction:column; gap:0.8rem;">
+          <button onclick="connectPayment('stripe')" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); color:var(--cream); padding:0.8rem 1.2rem; font-family:'DM Sans',sans-serif; font-size:0.85rem; cursor:pointer; text-align:left; transition:background 0.2s; display:flex; align-items:center; gap:0.8rem;">
+            <span style="font-size:1.2rem;">💳</span> <span>Conectar con <strong>Stripe</strong></span>
+          </button>
+          <button onclick="connectPayment('paypal')" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); color:var(--cream); padding:0.8rem 1.2rem; font-family:'DM Sans',sans-serif; font-size:0.85rem; cursor:pointer; text-align:left; transition:background 0.2s; display:flex; align-items:center; gap:0.8rem;">
+            <span style="font-size:1.2rem;">🅿️</span> <span>Conectar con <strong>PayPal</strong></span>
+          </button>
+          <button onclick="connectPayment('mercadopago')" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); color:var(--cream); padding:0.8rem 1.2rem; font-family:'DM Sans',sans-serif; font-size:0.85rem; cursor:pointer; text-align:left; transition:background 0.2s; display:flex; align-items:center; gap:0.8rem;">
+            <span style="font-size:1.2rem;">🛒</span> <span>Conectar con <strong>MercadoPago</strong></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Archi<span>vio</span></div>
+  <p>© 2026 Archivio · Tienda de productos digitales · Pagos seguros con SSL</p>
+</footer>
+
+<!-- CART OVERLAY -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+
+<!-- CART SIDEBAR -->
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header">
+    <h2>Tu carrito</h2>
+    <button class="cart-close" onclick="closeCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty">
+      <div class="cart-empty-icon">🛒</div>
+      <p style="color:var(--warm-gray); font-size:0.9rem;">Tu carrito está vacío.</p>
+    </div>
+  </div>
+  <div class="cart-footer">
+    <div class="cart-total-row">
+      <span class="cart-total-label">Total</span>
+      <span class="cart-total-amount" id="cartTotal">$0.00</span>
+    </div>
+    <div class="payment-methods">
+      <span class="pm-badge">VISA</span>
+      <span class="pm-badge">MC</span>
+      <span class="pm-badge">PAYPAL</span>
+      <span class="pm-badge">MP</span>
+    </div>
+    <button class="checkout-btn" id="checkoutBtn" onclick="checkout()" disabled>
+      Pagar ahora
+    </button>
+    <p class="secure-note">🔒 Pago 100% seguro · Descarga instantánea</p>
+  </div>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-icon" id="modalIcon">✅</div>
+    <h2 id="modalTitle">¡Listo!</h2>
+    <p id="modalText">Tu acción fue exitosa.</p>
+    <button class="btn-primary" onclick="closeModal()">Aceptar</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+  // ── SAMPLE PRODUCTS ──
+  const sampleProducts = [
+    { id: 1, name: 'Creación de Productos Digitales Exitosos', cat: 'Guía PDF', price: 7, currency: 'USD', desc: 'Descubrí el método paso a paso para crear, empaquetar y vender productos digitales exitosos. Ideal para emprendedores que quieren generar ingresos desde cero.', icon: '📖', badge: 'Nuevo', buyLink: 'https://delaordentom.gumroad.com/l/yusauw' },
+    { id: 2, name: 'Automatizar Ventas Creativas', cat: 'Guía PDF', price: 7, currency: 'USD', desc: 'Cómo vender sin estar presente, con sistemas simples y humanos que respetan tu esencia creativa.', icon: '🚀', badge: 'Nuevo', buyLink: 'https://delaordentom.gumroad.com/l/upfzze' },
+    { id: 3, name: 'Convertir un Hobby en Ingreso', cat: 'Guía PDF', price: 7, currency: 'USD', desc: 'De pasión personal a proyecto rentable sin dejar de disfrutarlo. Una guía completa para creativos, artesanos, músicos, diseñadores y creadores que quieren transformar lo que aman en una fuente de ingresos real.', icon: '🎨', badge: 'Nuevo', buyLink: 'https://delaordentom.gumroad.com/l/dipej' },
+    { id: 4, name: 'Cómo Montar tu Propio Blog y Monetizarlo', cat: 'Guía PDF', price: 7, currency: 'USD', desc: 'Descubrí el camino completo para crear tu blog desde cero y transformarlo en una fuente de ingresos sostenible a través de estrategias probadas de monetización.', icon: '✍️', badge: 'Nuevo', buyLink: 'https://delaordentom.gumroad.com/l/qodfh' },
+  ];
+
+  let cart = [];
+  let uploadedFiles = [];
+
+  // ── RENDER PRODUCTS ──
+  function renderProducts(products) {
+    const grid = document.getElementById('productGrid');
+    grid.innerHTML = products.map(p => `
+      <div class="product-card">
+        <div class="product-thumb">
+          <span class="product-thumb-icon">${p.icon}</span>
+          ${p.badge ? `<span class="product-badge">${p.badge}</span>` : ''}
+        </div>
+        <div class="product-info">
+          <div class="product-cat">${p.cat}</div>
+          <div class="product-name">${p.name}</div>
+          <div class="product-desc">${p.desc}</div>
+          <div class="product-footer">
+            <div class="product-price">$${p.price.toLocaleString('es-AR')} <span>${p.currency || 'ARS'}</span></div>
+            ${p.buyLink && p.buyLink !== '#'
+              ? `<a href="${p.buyLink}" target="_blank" class="add-btn">Comprar ahora</a>`
+              : `<button class="add-btn" onclick="addToCart(${p.id})">+ Agregar</button>`
+            }
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  renderProducts(sampleProducts);
+
+  // ── CART ──
+  function addToCart(id) {
+    const product = sampleProducts.find(p => p.id === id);
+    if (!product) return;
+    if (cart.find(i => i.id === id)) {
+      showToast('Ya está en tu carrito');
+      return;
+    }
+    cart.push(product);
+    updateCart();
+    showToast(`"${product.name}" agregado al carrito`);
+  }
+
+  function removeFromCart(id) {
+    cart = cart.filter(i => i.id !== id);
+    updateCart();
+  }
+
+  function updateCart() {
+    const count = cart.length;
+    const countEl = document.getElementById('cartCount');
+    countEl.textContent = count;
+    countEl.style.display = count > 0 ? 'flex' : 'none';
+
+    const total = cart.reduce((s, i) => s + i.price, 0);
+    document.getElementById('cartTotal').textContent = `$${total.toFixed(2)}`;
+
+    const checkoutBtn = document.getElementById('checkoutBtn');
+    checkoutBtn.disabled = count === 0;
+
+    const cartItemsEl = document.getElementById('cartItems');
+    if (count === 0) {
+      cartItemsEl.innerHTML = `<div class="cart-empty"><div class="cart-empty-icon">🛒</div><p style="color:var(--warm-gray);font-size:0.9rem;">Tu carrito está vacío.</p></div>`;
+    } else {
+      cartItemsEl.innerHTML = cart.map(item => `
+        <div class="cart-item">
+          <div class="cart-item-thumb">${item.icon}</div>
+          <div class="cart-item-info">
+            <div class="cart-item-name">${item.name}</div>
+            <div class="cart-item-cat">${item.cat}</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.4rem;">
+            <div class="cart-item-price">$${item.price.toFixed(2)}</div>
+            <button class="cart-item-remove" onclick="removeFromCart(${item.id})">Eliminar</button>
+          </div>
+        </div>
+      `).join('');
+    }
+  }
+
+  function openCart() {
+    document.getElementById('cartOverlay').classList.add('open');
+    document.getElementById('cartSidebar').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeCart() {
+    document.getElementById('cartOverlay').classList.remove('open');
+    document.getElementById('cartSidebar').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function checkout() {
+    if (cart.length === 0) return;
+    closeCart();
+    showModal('🎉', '¡Compra realizada!', 'En un entorno real, acá se abriría la pasarela de pago (Stripe, PayPal o MercadoPago). El comprador recibiría el link de descarga automáticamente por email.');
+    cart = [];
+    updateCart();
+  }
+
+  // ── FILE UPLOAD ──
+  const dropZone = document.getElementById('dropZone');
+
+  dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+  dropZone.addEventListener('drop', e => {
+    e.preventDefault();
+    dropZone.classList.remove('drag-over');
+    handleFiles(e.dataTransfer.files);
+  });
+
+  function handleFiles(files) {
+    Array.from(files).forEach(file => {
+      if (uploadedFiles.find(f => f.name === file.name)) return;
+      uploadedFiles.push(file);
+    });
+    renderFileList();
+    checkPublishReady();
+  }
+
+  function renderFileList() {
+    const list = document.getElementById('fileList');
+    list.innerHTML = uploadedFiles.map((f, i) => `
+      <div class="file-item">
+        <span class="file-icon">${getFileIcon(f.name)}</span>
+        <span class="file-name">${f.name}</span>
+        <span class="file-size">${formatSize(f.size)}</span>
+        <span class="file-remove" onclick="removeFile(${i})" title="Eliminar">✕</span>
+      </div>
+    `).join('');
+  }
+
+  function removeFile(i) {
+    uploadedFiles.splice(i, 1);
+    renderFileList();
+    checkPublishReady();
+  }
+
+  function getFileIcon(name) {
+    const ext = name.split('.').pop().toLowerCase();
+    const icons = { pdf: '📄', epub: '📚', zip: '🗜️', docx: '📝', xlsx: '📊', pptx: '📊', png: '🖼️', jpg: '🖼️', jpeg: '🖼️' };
+    return icons[ext] || '📁';
+  }
+
+  function formatSize(bytes) {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / 1048576).toFixed(1) + ' MB';
+  }
+
+  function checkPublishReady() {
+    const name = document.getElementById('prodName').value.trim();
+    const price = document.getElementById('prodPrice').value;
+    const cat = document.getElementById('prodCat').value;
+    document.getElementById('publishBtn').disabled = !(name && price && cat && uploadedFiles.length > 0);
+  }
+
+  ['prodName', 'prodPrice', 'prodCat'].forEach(id => {
+    document.getElementById(id).addEventListener('input', checkPublishReady);
+  });
+
+  // ── PUBLISH PRODUCT ──
+  function publishProduct() {
+    const name = document.getElementById('prodName').value.trim();
+    const desc = document.getElementById('prodDesc').value.trim();
+    const cat = document.getElementById('prodCat').value;
+    const price = parseFloat(document.getElementById('prodPrice').value);
+    const currency = document.getElementById('prodCurrency').value;
+
+    if (!name || !price || !cat || uploadedFiles.length === 0) return;
+
+    // Simulate upload
+    const progressWrap = document.getElementById('progressWrap');
+    const progressFill = document.getElementById('progressFill');
+    const progressLabel = document.getElementById('progressLabel');
+    const publishBtn = document.getElementById('publishBtn');
+
+    publishBtn.disabled = true;
+    progressWrap.style.display = 'block';
+
+    let progress = 0;
+    const interval = setInterval(() => {
+      progress += Math.random() * 18;
+      if (progress >= 100) {
+        progress = 100;
+        clearInterval(interval);
+        progressFill.style.width = '100%';
+        progressLabel.textContent = '¡Archivo subido!';
+
+        setTimeout(() => {
+          // Add to product grid
+          const icons = { 'Ebook': '📚', 'Plantilla': '📐', 'Guía PDF': '📄', 'Pack': '📦', 'Curso': '🎓' };
+          const newProduct = {
+            id: Date.now(),
+            name, cat, price,
+            desc: desc || 'Producto digital de alta calidad.',
+            icon: icons[cat] || '📁',
+            badge: 'Nuevo'
+          };
+          sampleProducts.unshift(newProduct);
+          renderProducts(sampleProducts);
+
+          // Reset form
+          document.getElementById('prodName').value = '';
+          document.getElementById('prodDesc').value = '';
+          document.getElementById('prodCat').value = '';
+          document.getElementById('prodPrice').value = '';
+          uploadedFiles = [];
+          renderFileList();
+          progressWrap.style.display = 'none';
+          progressFill.style.width = '0%';
+          checkPublishReady();
+
+          showModal('✅', '¡Producto publicado!', `"${name}" ya está disponible en tu tienda por ${currency} $${price.toFixed(2)}. Los compradores podrán verlo y comprarlo de inmediato.`);
+
+          document.getElementById('productos').scrollIntoView({ behavior: 'smooth' });
+        }, 600);
+      } else {
+        progressFill.style.width = progress + '%';
+        progressLabel.textContent = `Subiendo... ${Math.round(progress)}%`;
+      }
+    }, 120);
+  }
+
+  // ── PAYMENT CONNECT ──
+  function connectPayment(method) {
+    const names = { stripe: 'Stripe', paypal: 'PayPal', mercadopago: 'MercadoPago' };
+    showModal('💳', `Conectar ${names[method]}`, `En un entorno real, acá se abriría el flujo de autorización de ${names[method]}. Una vez conectado, todos los pagos llegarían directamente a tu cuenta.`);
+  }
+
+  // ── MODAL ──
+  function showModal(icon, title, text) {
+    document.getElementById('modalIcon').textContent = icon;
+    document.getElementById('modalTitle').textContent = title;
+    document.getElementById('modalText').textContent = text;
+    document.getElementById('modalOverlay').classList.add('open');
+  }
+
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+  }
+
+  document.getElementById('modalOverlay').addEventListener('click', e => {
+    if (e.target === e.currentTarget) closeModal();
+  });
+
+  // ── TOAST ──
+  let toastTimer;
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 2800);
+  }
+</script>
+</body>
+</html>
