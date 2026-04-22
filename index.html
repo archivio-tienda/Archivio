@@ -1032,10 +1032,7 @@
 <script>
   // ── SAMPLE PRODUCTS ──
   const sampleProducts = [
-    { id: 1, name: 'Guía de Finanzas Personales', cat: 'Guía PDF', price: 9.99, desc: '50 páginas con estrategias probadas para ahorrar e invertir desde cero.', icon: '📊', badge: 'Nuevo' },
-    { id: 2, name: 'Pack de Plantillas para CV', cat: 'Pack', price: 14.99, desc: '10 plantillas profesionales en Word y PDF para destacar en tu búsqueda laboral.', icon: '📄', badge: null },
-    { id: 3, name: 'Ebook: Marketing Digital 2025', cat: 'Ebook', price: 19.99, desc: 'Todo lo que necesitás saber sobre redes sociales, SEO y publicidad digital.', icon: '📱', badge: 'Popular' },
-    { id: 4, name: 'Plantilla de Plan de Negocio', cat: 'Plantilla', price: 12.99, desc: 'Estructura tu emprendimiento con esta plantilla lista para completar.', icon: '💼', badge: null },
+    { id: 1, name: 'Creación de Productos Digitales Exitosos', cat: 'Guía PDF', price: 10000, currency: 'ARS', desc: 'Descubrí el método paso a paso para crear, empaquetar y vender productos digitales exitosos. Ideal para emprendedores que quieren generar ingresos desde cero.', icon: '📖', badge: 'Nuevo', buyLink: 'https://delaordentom.gumroad.com/l/yusauw' },
   ];
 
   let cart = [];
@@ -1055,8 +1052,11 @@
           <div class="product-name">${p.name}</div>
           <div class="product-desc">${p.desc}</div>
           <div class="product-footer">
-            <div class="product-price">$${p.price.toFixed(2)} <span>USD</span></div>
-            <button class="add-btn" onclick="addToCart(${p.id})">+ Agregar</button>
+            <div class="product-price">$${p.price.toLocaleString('es-AR')} <span>${p.currency || 'ARS'}</span></div>
+            ${p.buyLink && p.buyLink !== '#'
+              ? `<a href="${p.buyLink}" target="_blank" class="add-btn">Comprar ahora</a>`
+              : `<button class="add-btn" onclick="addToCart(${p.id})">+ Agregar</button>`
+            }
           </div>
         </div>
       </div>
